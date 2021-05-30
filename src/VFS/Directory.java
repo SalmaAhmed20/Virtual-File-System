@@ -12,6 +12,13 @@ public class Directory {
         name="root";
 
     }
+    public String getName ( ) {
+        return name;
+    }
+
+    public void setName (String name) {
+        this.name = name;
+    }
 
     public String getDirectoryPath ( ) {
         return directoryPath;

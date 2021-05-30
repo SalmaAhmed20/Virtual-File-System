@@ -76,6 +76,30 @@ public class Contiguous {
         System.out.println ("After Allocate " + String.valueOf (Blocks));
         return true;
     }
+    //Utility functions private
+    Directory DirExist (Directory Dir , String[] folders,int start,int num)
+    {
+        if (folders.length == 2 && Dir instanceof  Directory)
+            return Dir;
+        for (var dir : Dir.getSubDirectories ())
+        {
+            if (folders[start].equals (dir.getName ()) && Dir instanceof  Directory)
+            {
+                if (start == num && folders[start].equals (dir.getName ())  )
+                    return dir;
+                return DirExist (dir,folders,start+1,num);
+            }
+        }
+        return null;
+    }
+    //commands function
+    boolean CreateFile(String path, int Size)
+    {
+        String[] Folder = path.split ("/");
+        File F = new File ();
+        F.setName (Folder[Folder.length-1]);
+        return true;
+    }
     //Main
     public static void main (String[] args) {
         Contiguous ctgs = new Contiguous ();
@@ -84,6 +108,13 @@ public class Contiguous {
         ctgs.Allocate (6);
         ctgs.deallocateSpace (6,2);
         ctgs.Allocate (6);
+        String[] Folder = "root/file.txt ".split ("/");
+        for (int i = 0 ; i < Folder.length ; i++) {
+            System.out.println (Folder[i]);
+        }
+        File F = new File ();
+        F.setName (Folder[Folder.length-1]);
+        System.out.println (F.getName ());
     }
 
 }
