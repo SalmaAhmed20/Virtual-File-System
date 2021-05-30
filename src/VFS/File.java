@@ -4,6 +4,7 @@ public class File {
         private String filePath;
         private  int Size;
         private String name;
+        private int idxn;
         private int[] allocatedBlocks;
         private boolean deleted;
         public int getSize ( ) {
@@ -44,5 +45,13 @@ public class File {
 
         public void setName (String name) {
                 this.name = name;
+        }
+
+        public int getIdxn ( ) {
+                return idxn;
+        }
+
+        public void setIdxn (int idxn) {
+                this.idxn = idxn;
         }
 }
