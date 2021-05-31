@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Contiguous {
-    private static final Directory root = new Directory ();
+    private final Directory root = new Directory ();
     private final int DiskSize = 30; //KB
-    private String B = "000000000000000000000000000000"; //initial value
+    private final String B = "000000000000000000000000000000"; //initial value
     char[] Blocks = this.B.toCharArray ();
     private int FreeBlocks = DiskSize;
+    private int l = 0;
 
     //---------------------Free Space Management function----------------------------------
     int Allocate (int FSize) {
@@ -318,27 +319,64 @@ public class Contiguous {
                 System.out.println ("Path doesn't exist");
         }
     }
-    void DisplayDiskStatus()
-    {
-        ArrayList<Integer> empty  =new ArrayList <> ();
-        ArrayList<Integer> Alloc  =new ArrayList <> ();
-        System.out.println ("Total Empty space : " + this.FreeBlocks +" KB");
-        System.out.println ("Total Allocated Space : " + (this.DiskSize - this.FreeBlocks)+" KB");
+
+    void DisplayDiskStatus () {
+        ArrayList <Integer> empty = new ArrayList <> ();
+        ArrayList <Integer> Alloc = new ArrayList <> ();
+        System.out.println ("Total Empty space : " + this.FreeBlocks + " KB");
+        System.out.println ("Total Allocated Space : " + (this.DiskSize - this.FreeBlocks) + " KB");
         for (int i = 0 ; i < Blocks.length ; i++) {
-            if (Blocks[i] == '0')
+            if(Blocks[ i ] == '0')
                 empty.add (i);
             else
                 Alloc.add (i);
         }
         System.out.print ("Allocated blocks are : ");
         for (Integer n : Alloc) {
-            System.out.print(n+" ");
+            System.out.print (n + " ");
         }
         System.out.print ("\nEmpty blocks are : ");
         for (Integer n : empty) {
-            System.out.print(n+" ");
+            System.out.print (n + " ");
         }
         System.out.println ("\n");
+    }
+
+    void DisplayDiskStructure (Directory dir) {
+        int level = l;
+        Directory d = dir;
+        if(level == 0) {
+            d = root;
+            System.out.println ("< " + d.getName () + " > ");
+            if(d.getFiles ()!=null) {
+                ArrayList <File> files = new ArrayList <> (Arrays.asList (d.getFiles ()));
+                for (File f : files) {
+                    System.out.println (f.getName ());
+                }
+            }
+            ArrayList <Directory> D = new ArrayList <> (Arrays.asList (d.getSubDirectories ()));
+            l++;
+            for (Directory dir1 : D) {
+                if(dir1 != null)
+                    this.DisplayDiskStructure (dir1);
+            }
+        } else {
+            if(d != null) {
+                System.out.println ("< " + d.getName () + " > ");
+                if(d.getFiles ()!=null) {
+                    ArrayList <File> files = new ArrayList <> (Arrays.asList (d.getFiles ()));
+                    for (File f : files) {
+                        System.out.println (f.getName ());
+                    }
+                }
+                ArrayList <Directory> D = new ArrayList <> (Arrays.asList (d.getSubDirectories ()));
+                l++;
+                for (Directory dir1 : D) {
+                    if(dir1 != null)
+                        this.DisplayDiskStructure (dir1);
+                }
+            }
+        }
     }
 
 
@@ -350,7 +388,7 @@ public class Contiguous {
         Dir.setName ("Folder");
         Directory[] sub = new Directory[ 2 ];
         sub[ 0 ] = Dir;
-        root.setSubDirectories (sub);
+        ctgs.root.setSubDirectories (sub);
         ctgs.CreateFile ("root/file.txt",10);
         ctgs.CreateFolder ("root/Folde2");
         ctgs.CreateFolder ("root/Folde3");
@@ -358,8 +396,10 @@ public class Contiguous {
         ctgs.CreateFile ("root/Folder/file.txt",2);
         //ctgs.DeleteFile ("root/Folder/file.txt");
         ctgs.DisplayDiskStatus ();
-        ctgs.DeleteFolder ("root/Folder");
-        ctgs.DisplayDiskStatus ();
+        //ctgs.DeleteFolder ("root/Folder");
+        //ctgs.DisplayDiskStatus ();
+        ctgs.CreateFile ("root/Folder/Folde2/file2.txt",2);
+        ctgs.DisplayDiskStructure (ctgs.root);
 
 
     }
