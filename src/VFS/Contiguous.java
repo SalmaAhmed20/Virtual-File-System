@@ -301,7 +301,7 @@ public class Contiguous {
                     Directory TobeDelete = dir.getSubDirectories ()[ flag ];
                     this.deleteContent (TobeDelete);
                     dir.getSubDirectories ()[ flag ].setDeleted (true);
-                    ArrayList <Directory> D = new ArrayList <Directory> (Arrays.asList (dir.getSubDirectories ()));
+                    ArrayList <Directory> D = new ArrayList <> (Arrays.asList (dir.getSubDirectories ()));
                     D.remove (flag);
                     dir.setSubDirectories (D.toArray (new Directory[ 0 ]));
 
@@ -350,7 +350,7 @@ public class Contiguous {
         Dir.setName ("Folder");
         Directory[] sub = new Directory[ 2 ];
         sub[ 0 ] = Dir;
-        ctgs.root.setSubDirectories (sub);
+        root.setSubDirectories (sub);
         ctgs.CreateFile ("root/file.txt",10);
         ctgs.CreateFolder ("root/Folde2");
         ctgs.CreateFolder ("root/Folde3");
