@@ -77,7 +77,7 @@ public class Contiguous {
     //Utility functions private
     //for create file
     Directory DirExist (Directory Dir,String[] folders,int start,int num) {
-        if ( folders.length == 2 && Dir instanceof Directory ) {
+        if ( folders.length == 2 && Dir != null ) {
 
 
             //System.out.println (Dir.getName ());
@@ -86,10 +86,11 @@ public class Contiguous {
             //return null;
         }
         //System.out.println ("in for");
+        assert Dir != null;
         for (Directory dir : Dir.getSubDirectories ()) {
             //System.out.println (folders[start]);
             if ( dir != null ) {
-                if ( folders[ start ].equals (dir.getName ()) && Dir instanceof Directory ) {
+                if ( folders[ start ].equals (dir.getName ()) ) {
                     //System.out.println ( folders[ start ].equals (dir.getName ()));
                     if ( start == num && folders[ start ].equals (dir.getName ()) )
                         //System.out.println (folders[ start ].equals (dir.getName ()));
@@ -102,12 +103,13 @@ public class Contiguous {
     }
     //for create folder
     Directory DirExist2 (Directory Dir,String[] folders,int start,int num) {
-        if ( folders.length == 2 && Dir instanceof Directory ) {
+        if ( folders.length == 2 && Dir != null ) {
             return Dir;
         }
+        assert Dir != null;
         for (Directory dir : Dir.getSubDirectories ()) {
             if ( dir != null ) {
-                if ( folders[ start ].equals (dir.getName ()) && Dir instanceof Directory ) {
+                if ( folders[ start ].equals (dir.getName ()) ) {
                     if ( start == num && folders[ start ].equals (dir.getName ()) )
                         return dir;
                     return dir;
@@ -129,7 +131,7 @@ public class Contiguous {
     }
 
     //commands function
-    boolean CreateFile (String path,int Size) {
+    void CreateFile (String path,int Size) {
         int start;
         String[] Folder = path.split ("/");
         Arrays.copyOf (Folder,Folder.length - 1);
@@ -147,7 +149,7 @@ public class Contiguous {
             {
                 start = Allocate (Size);
                 if ( start == - 1 ) {
-                    return false;
+                    return;
                 } else {
                     if ( dir.getFiles () != null ) {
                         File[] New = new File[ dir.getFiles ().length + 1 ];
@@ -171,11 +173,9 @@ public class Contiguous {
                 System.out.println ("File Already exist");
         } else
             System.out.println ("Path doesn't exist");
-        return true;
     }
 
     boolean CreateFolder (String path) {
-        int start;
         int flag = - 1;
         String[] Folder = path.split ("/");
         String Fname = Folder[ Folder.length - 1 ];
@@ -183,7 +183,8 @@ public class Contiguous {
         newDir.setName (Fname);
         newDir.setDirectoryPath (path);
 
-        Directory dir =new Directory ();
+        new Directory ();
+        Directory dir;
        dir= this.DirExist2 (root,Folder,1,Folder.length);
         //System.out.println (dir.getSubDirectories ().toString ());
         if ( dir != null ) {
