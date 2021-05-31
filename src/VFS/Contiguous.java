@@ -337,10 +337,15 @@ public class Contiguous {
             if(dir.getSubDirectories () == null) {
                 flag = - 1;
             } else if(dir.getSubDirectories () != null) {
-                for (int i = 0 ; i < dir.getSubDirectories ().length && dir.getSubDirectories ()[ i ] != null ; i++) {
-                    if(dir.getSubDirectories ()[ i ].getName ().equals (Fname)) {
+
+                assert dir.getSubDirectories ()!=null;
+                for (int i = 0 ; i < dir.getSubDirectories ().length  ; i++) {
+                    if(dir.getSubDirectories ()[i]!=null)
+                    if(dir.getSubDirectories ()[ i ].getName ().equals (Fname) ) {
                         flag = i;
+
                     }
+                  //  System.out.println (dir.getSubDirectories ()[ i ].getName ());
                 }
                 if(flag != - 1) {
                     Directory TobeDelete = dir.getSubDirectories ()[ flag ];
@@ -499,14 +504,16 @@ public class Contiguous {
     //Main
     public static void main (String[] args) {
         Contiguous ctgs = new Contiguous ();
-        //ctgs.loadFromFile ();
-        /*ctgs.CreateFile ("root/file.txt",10);
+        ctgs.loadFromFile ();
+        ctgs.CreateFile ("root/file.txt",10);
+        ctgs.CreateFile ("root/file.txt",10);
         System.out.println ("-----------------------------");
         ctgs.CreateFile ("root/file2.txt",8);
         System.out.println ("--------------------------------");
         ctgs.CreateFolder ("root/Folder");
         System.out.println ("--------------------------------");
         ctgs.CreateFile ("root/Folder/test.txt",5);
+        ctgs.CreateFile ("root/Folderr/test.txt",5);
         System.out.println ("--------------------------------");
         ctgs.CreateFolder ("root/Folder/Folder2");
         System.out.println ("--------------------------------");
@@ -524,15 +531,22 @@ public class Contiguous {
         System.out.println ("--------------------------------");
         ctgs.DisplayDiskStatus ();
         ctgs.DisplayDiskStructure (ctgs.root);
-        ctgs.storeToVFS ();*/
+        ctgs.storeToVFS ();
+        /*System.out.println ("\n\n----------------Example on----------------");
         Directory Dir = new Directory();
         Dir.setDirectoryPath("root/Folder");
         Dir.setName("Folder");
         Directory[] sub = new Directory[2];
         sub[0] = Dir;
-        ctgs.root.setSubDirectories(sub);
+        ctgs.CreateFile("root/Folder/hi.txt", 2);
+        ctgs.CreateFolder("root/Folder/fold");
+        ctgs.DeleteFolder ("root/Folder");
+        ctgs.DisplayDiskStatus ();
+        ctgs.DisplayDiskStructure(ctgs.root);*/
+       /* Directory Dir = new Directory();
+
         ctgs.CreateFile("root/file.txt", 10);
-        ctgs.CreateFolder("root/Folde2");
+        ctgs.CreateFolder("root/Folder");
         ctgs.CreateFolder("root/Folde3");
         ctgs.CreateFolder("root/Folder/fold");
         ctgs.CreateFile("root/Folder/file.txt", 2);
@@ -542,7 +556,7 @@ public class Contiguous {
         //ctgs.DisplayDiskStatus ();
         ctgs.CreateFile("root/Folder/Folde2/file2.txt", 2);
         ctgs.DisplayDiskStructure(ctgs.root);
-
+*/
 
 
 
