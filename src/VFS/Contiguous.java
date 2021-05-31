@@ -79,16 +79,25 @@ public class Contiguous {
     //Utility functions private
     Directory DirExist (Directory Dir , String[] folders,int start,int num)
     {
-        if (folders.length == 2 && Dir instanceof  Directory)
-            return Dir;
-        for (var dir : Dir.getSubDirectories ())
+        if (folders.length == 2 && Dir instanceof  Directory ) {
+
+
+            //System.out.println (Dir.getName ());
+            if(folders[0].equals (Dir.getName ()))
+                return Dir;
+            return  null;
+        }
+        System.out.println ("in for");
+        for (Directory dir : Dir.getSubDirectories ())
         {
+            System.out.println (folders[start]);
             if (folders[start].equals (dir.getName ()) && Dir instanceof  Directory)
             {
-                if (start == num && folders[start].equals (dir.getName ())  )
+                System.out.println (folders[start]);
+                if (start == num && folders[start].equals (dir.getName ()))
                     return dir;
-                return DirExist (dir,folders,start+1,num);
             }
+            return DirExist (dir,folders,start+1,num);
         }
         return null;
     }
@@ -103,7 +112,7 @@ public class Contiguous {
         return -1;
     }
     //commands function
-    boolean CreateFile(String path, int Size)
+    boolean CreateFile (String path,int Size)
     {
         int start;
         String[] Folder = path.split ("/");
@@ -154,8 +163,14 @@ public class Contiguous {
     //Main
     public static void main (String[] args) {
         Contiguous ctgs = new Contiguous ();
-       ctgs.CreateFile ("root/file.txt",10);
-       ctgs.CreateFile ("root/file1.txt",6);
+        Directory Dir = new Directory ();
+        Dir.setDirectoryPath ("root/Folder");
+        Dir.setName ("Folder");
+        Directory [] sub = new  Directory[1];
+        sub[0]=Dir;
+        ctgs.root.setSubDirectories (sub);
+       ctgs.CreateFile ("root/Folder/file.txt",10);
+       ctgs.CreateFile ("rootttt/file1.txt",6);
     }
 
 }
