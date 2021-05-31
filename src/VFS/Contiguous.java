@@ -172,7 +172,7 @@ public class Contiguous {
         sub[0]=Dir;
         ctgs.root.setSubDirectories (sub);
        ctgs.CreateFile ("root/Folder/file.txt",10);
-       ctgs.CreateFile ("root/Folder/file1.txt",6);
+       ctgs.CreateFile ("root/F/file1.txt",6);
     }
 
 }
