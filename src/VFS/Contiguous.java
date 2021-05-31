@@ -246,7 +246,7 @@ public class Contiguous {
         ctgs.root.setSubDirectories (sub);
        ctgs.CreateFile ("root/file.txt",10);
 
-       ctgs.CreateFolder ("root/Folder/Folder2");
+       ctgs.CreateFolder ("root/Folder");
        ctgs.CreateFile ("root/Folder/Folder2/file.txt",2);
 
     }
