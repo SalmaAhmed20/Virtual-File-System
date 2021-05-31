@@ -3,7 +3,7 @@ package VFS;
 public class Directory {
     private String directoryPath;
     private String name;
-    private File[] files;
+    private File[] files ;
     private Directory[] subDirectories;
     private boolean deleted = false;
 

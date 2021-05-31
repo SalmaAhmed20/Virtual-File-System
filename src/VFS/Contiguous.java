@@ -5,7 +5,7 @@ import java.lang.reflect.Array;
 public class Contiguous {
     private final Directory root = new Directory ();
     private final int DiskSize = 30; //KB
-    private String B = "000000000000000000000000000000"; //intial value
+    private String B = "000000000000000000000000000000"; //initial value
     char [] Blocks = this.B.toCharArray();
     private int FreeBlocks = DiskSize;
 //---------------------Free Space Management function----------------------------------
@@ -92,29 +92,70 @@ public class Contiguous {
         }
         return null;
     }
+    int Existfile(String nameOfFile ,File [] files)
+    {
+        if (files == null)
+            return -1;
+        for (int i = 0 ;i < files.length;i++) {
+            if (files[i].getName ().equals (nameOfFile))
+                return i;
+        }
+        return -1;
+    }
     //commands function
     boolean CreateFile(String path, int Size)
     {
+        int start;
         String[] Folder = path.split ("/");
         File F = new File ();
         F.setName (Folder[Folder.length-1]);
+        F.setSize (Size);
+        F.setFilePath (path);
+        //treverse file system as tree until reach the last directory before file
+        Directory dir = this.DirExist (root,Folder,1,Folder.length-2);
+
+        if (dir != null) // if the file doesn't exist  then you can add it
+        {
+
+            if ( this.Existfile (F.getName (),dir.getFiles ()) ==-1) //doesn't exist
+            {
+                start=Allocate (Size);
+                if (start == -1) {
+                    return false;
+                }
+                else
+                {
+                    if (dir.getFiles ()!=null) {
+                        File New[] = new File[ dir.getFiles ().length + 1 ];
+                        for (int i = 0 ; i < dir.getFiles ().length ; i++) {
+                            New[ i ] = dir.getFiles ()[ i ];
+                        }
+                        New[ dir.getFiles ().length ] = F;
+                        dir.setFiles (New);
+                    }
+                    else
+                    {
+                        File New[] = new File[1];
+                        New[ 0] = F;
+                        dir.setFiles (New);
+                    }
+                    F.getAllocatedBlocks ()[0][0] = start;
+                    F.getAllocatedBlocks ()[0][1] =Size+start;
+                    System.out.println ("Allocated space is from   "+ F.getAllocatedBlocks ()[0][0]+" to " + F.getAllocatedBlocks ()[0][1]);
+                    System.out.println ("File " + F.getName () +" Created successfully");
+                }
+
+            }else
+                System.out.println ("File Already exist");
+        }else
+            System.out.println ("Path doesn't exist");
         return true;
     }
     //Main
     public static void main (String[] args) {
         Contiguous ctgs = new Contiguous ();
-        ctgs.Allocate (25);
-        System.out.println ("second");
-        ctgs.Allocate (6);
-        ctgs.deallocateSpace (6,2);
-        ctgs.Allocate (6);
-        String[] Folder = "root/file.txt ".split ("/");
-        for (int i = 0 ; i < Folder.length ; i++) {
-            System.out.println (Folder[i]);
-        }
-        File F = new File ();
-        F.setName (Folder[Folder.length-1]);
-        System.out.println (F.getName ());
+       ctgs.CreateFile ("root/file.txt",10);
+       ctgs.CreateFile ("root/file1.txt",6);
     }
 
 }

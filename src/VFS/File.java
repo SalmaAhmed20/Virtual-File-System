@@ -5,7 +5,7 @@ public class File {
         private  int Size;
         private String name;
         private int idxn;
-        private int[] allocatedBlocks;
+        private int[][] allocatedBlocks =new int[1][2];
         private boolean deleted;
         public int getSize ( ) {
                 return Size;
@@ -21,13 +21,7 @@ public class File {
         public void setFilePath (String filePath) {
                 this.filePath = filePath;
         }
-        public int[] getAllocatedBlocks ( ) {
-                return allocatedBlocks;
-        }
 
-        public void setAllocatedBlocks (int[] allocatedBlocks) {
-                this.allocatedBlocks = allocatedBlocks;
-        }
 
 
         public boolean isDeleted ( ) {
@@ -53,5 +47,13 @@ public class File {
 
         public void setIdxn (int idxn) {
                 this.idxn = idxn;
+        }
+
+        public int[][] getAllocatedBlocks ( ) {
+                return allocatedBlocks;
+        }
+
+        public void setAllocatedBlocks (int[][] allocatedBlocks) {
+                this.allocatedBlocks = allocatedBlocks;
         }
 }
