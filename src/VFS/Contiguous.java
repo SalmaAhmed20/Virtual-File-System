@@ -1,5 +1,7 @@
 package VFS;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -378,6 +380,44 @@ public class Contiguous {
             }
         }
     }
+    //files .vfs save and load
+    void storeToVFS()
+    {
+        try {
+            FileWriter fWriter = new FileWriter ("Contiguous.vfs");
+            fWriter.write ( String.valueOf (Blocks)+"%");
+            fWriter.write ( String.valueOf (DiskSize)+"%");
+            fWriter.write ( String.valueOf (this.FreeBlocks)+"%");
+            this.SaveRec (root,fWriter);
+            fWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace ();
+        }
+
+    }
+    void SaveRec(Directory dir,FileWriter f)
+    {
+        try {
+            if(dir !=null) {
+                f.append ("-Dir//" + dir.getDirectoryPath () );
+                if(dir.getSubDirectories () == null || dir.getFiles () == null) return;
+                else {
+
+                    ArrayList <File> files = new ArrayList <> (Arrays.asList (dir.getFiles ()));
+                    for (File fl : files) {
+                        f.append ("-Fl//" + fl.getFilePath ()
+                                + "||" + fl.getAllocatedBlocks ()[ 0 ][ 0 ] + "||" + fl.getAllocatedBlocks ()[ 0 ][ 1 ]);
+                    }
+                    ArrayList <Directory> D = new ArrayList <> (Arrays.asList (dir.getSubDirectories ()));
+                    for (Directory dir1 : D) {
+                        SaveRec (dir1,f);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace ();
+        }
+    }
 
 
     //Main
@@ -390,16 +430,18 @@ public class Contiguous {
         sub[ 0 ] = Dir;
         ctgs.root.setSubDirectories (sub);
         ctgs.CreateFile ("root/file.txt",10);
+        ctgs.CreateFile ("root/file2.txt",8);
         ctgs.CreateFolder ("root/Folde2");
         ctgs.CreateFolder ("root/Folde3");
         ctgs.CreateFolder ("root/Folder/fold");
         ctgs.CreateFile ("root/Folder/file.txt",2);
         //ctgs.DeleteFile ("root/Folder/file.txt");
         ctgs.DisplayDiskStatus ();
-        //ctgs.DeleteFolder ("root/Folder");
+        ctgs.DeleteFolder ("root/Folder");
         //ctgs.DisplayDiskStatus ();
-        ctgs.CreateFile ("root/Folder/Folde2/file2.txt",2);
+        //ctgs.CreateFile ("root/Folder/Folde2/file2.txt",2);
         ctgs.DisplayDiskStructure (ctgs.root);
+        ctgs.storeToVFS ();
 
 
     }
