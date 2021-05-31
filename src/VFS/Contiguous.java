@@ -1,7 +1,6 @@
 package VFS;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
 
 public class Contiguous {
     private final Directory root = new Directory ();
@@ -55,7 +54,7 @@ public class Contiguous {
                 this.FreeBlocks--;
             }
         }
-        System.out.println ("After Allocate " + String.valueOf (Blocks));
+        System.out.println ("After Allocate  " + String.valueOf (Blocks));
         return IdxofWorest;
     }
 
@@ -70,7 +69,7 @@ public class Contiguous {
                 return false;
             }
         }
-        System.out.println ("After Allocate " + String.valueOf (Blocks));
+        System.out.println ("After Allocate  " + String.valueOf (Blocks));
         return true;
     }
 
@@ -81,19 +80,15 @@ public class Contiguous {
 
 
             //System.out.println (Dir.getName ());
-            //if ( folders[ 0 ].equals (Dir.getName ()) )
+            if ( folders[ 0 ].equals (Dir.getName ()) )
                 return Dir;
-            //return null;
+            return null;
         }
-        //System.out.println ("in for");
         assert Dir != null;
         for (Directory dir : Dir.getSubDirectories ()) {
-            //System.out.println (folders[start]);
             if ( dir != null ) {
                 if ( folders[ start ].equals (dir.getName ()) ) {
-                    //System.out.println ( folders[ start ].equals (dir.getName ()));
                     if ( start == num && folders[ start ].equals (dir.getName ()) )
-                        //System.out.println (folders[ start ].equals (dir.getName ()));
                         return dir;
                 }
                 return DirExist (dir,folders,start + 1,num);
@@ -134,12 +129,11 @@ public class Contiguous {
     void CreateFile (String path,int Size) {
         int start;
         String[] Folder = path.split ("/");
-        Arrays.copyOf (Folder,Folder.length - 1);
+        //Arrays.copyOf (Folder,Folder.length - 1);
         File F = new File ();
         F.setName (Folder[ Folder.length - 1 ]);
         F.setSize (Size);
         F.setFilePath (path);
-        //treverse file system as tree until reach the last directory before file
         Directory dir = this.DirExist (root,Folder,1,Folder.length - 2);
 
         if ( dir != null ) // if the file doesn't exist  then you can add it
@@ -163,6 +157,7 @@ public class Contiguous {
                         New[ 0 ] = F;
                         dir.setFiles (New);
                     }
+
                     F.getAllocatedBlocks ()[ 0 ][ 0 ] = start;
                     F.getAllocatedBlocks ()[ 0 ][ 1 ] = Size + start;
                     System.out.println ("Allocated space is from   " + F.getAllocatedBlocks ()[ 0 ][ 0 ] + " to " + F.getAllocatedBlocks ()[ 0 ][ 1 ]);
@@ -186,9 +181,7 @@ public class Contiguous {
         new Directory ();
         Directory dir;
        dir= this.DirExist2 (root,Folder,1,Folder.length);
-        //System.out.println (dir.getSubDirectories ().toString ());
         if ( dir != null ) {
-            //System.out.println (dir.getName ());
             if ( dir.getSubDirectories () == null )
                 flag = - 1;
             else if(dir.getSubDirectories ()!=null){
@@ -224,14 +217,38 @@ public class Contiguous {
     }
     void DeleteFile (String path)
     {
+        int idx;
         String[] Folder = path.split ("/");
-        String Fname = Folder[ Folder.length - 1 ];
         File F = new File ();
         F.setName (Folder[ Folder.length - 1 ]);
         F.setFilePath (path);
         Directory dir = this.DirExist (root,Folder,1,Folder.length - 2);
+        if (dir != null)
+        {
+            idx=this.Existfile (F.getName (),dir.getFiles ());
+            if (idx==-1)
+            {
+                System.out.println ("File not exist ");
+            }
+            else {
+                File  files= dir.getFiles ()[idx];
+                F.setDeleted (true);
+                System.out.println ("File " + files.getName () +" is deleted");
+                if ( dir.getFiles () == null || idx >= dir.getFiles ().length ) {
+                    dir.setFiles (dir.getFiles());
+                }
+                File[] anotherArray = new File[dir.getFiles().length - 1];
+                System.arraycopy(dir.getFiles(), 0, anotherArray, 0, idx);
+                System.arraycopy(dir.getFiles(), idx + 1,anotherArray, idx,dir.getFiles().length - idx - 1);
+                dir.setFiles (anotherArray);
+                int Start = files.getAllocatedBlocks ()[ 0 ][ 0 ];
+                int size = Math.abs( files.getAllocatedBlocks ()[ 0 ][ 1 ] -  files.getAllocatedBlocks ()[ 0 ][ 0 ]);
+                if(!this.deallocateSpace (Start,size)) System.out.println ("Error");
 
-
+            }
+        }
+        else
+            System.out.println ("Path doesn't exist");
     }
 
 
@@ -246,8 +263,9 @@ public class Contiguous {
         ctgs.root.setSubDirectories (sub);
        ctgs.CreateFile ("root/file.txt",10);
 
-       ctgs.CreateFolder ("root/Folder");
-       ctgs.CreateFile ("root/Folder/Folder2/file.txt",2);
+       ctgs.CreateFolder ("root/Folder/fold");
+       ctgs.CreateFile ("root/Folder/fold/file.txt",2);
+       ctgs.DeleteFile ("root/Folderrr/file.txt");
 
     }
 
