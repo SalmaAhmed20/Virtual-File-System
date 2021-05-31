@@ -210,12 +210,27 @@ public class Contiguous {
                     dir.setSubDirectories (New);
                 }
                 System.out.println ("Directory " + newDir.getName () + " Created successfully");
+                return true;
             }
-            else
+            else {
                 System.out.println ("Directory Already exist");
-        } else
+                return false;
+            }
+        } else {
             System.out.println ("Path doesn't exist");
-        return true;
+            return false;
+        }
+    }
+    void DeleteFile (String path)
+    {
+        String[] Folder = path.split ("/");
+        String Fname = Folder[ Folder.length - 1 ];
+        File F = new File ();
+        F.setName (Folder[ Folder.length - 1 ]);
+        F.setFilePath (path);
+        Directory dir = this.DirExist (root,Folder,1,Folder.length - 2);
+
+
     }
 
 
