@@ -4,7 +4,7 @@ public class Directory {
     private String directoryPath;
     private String name;
     private File[] files ;
-    private Directory[] subDirectories = new  Directory[5];
+    private Directory[] subDirectories ;
     private boolean deleted = false;
 
     public Directory ( ) {
